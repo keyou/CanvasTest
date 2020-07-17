@@ -126,14 +126,21 @@
           if (!last_point) return;
           const events = e.getCoalescedEvents();
           caculateXPS(events.length, 1);
+          var last_point0;
           events.forEach((e) => {
-            drawLineTo(getPoint(e));
+            last_point0 = getPoint(e);
+            drawLineTo(last_point0);
           });
           if (lagtime > 0) {
+            const lag = last_move_speed * LagTime;
             ctx.strokeStyle = "red";
             ctx.beginPath();
-            ctx.arc(last_point.x, last_point.y, last_move_speed * LagTime, 0, 2 * Math.PI);
+            ctx.arc(last_point.x, last_point.y, lag, 0, 2 * Math.PI);
             ctx.stroke();
+            ctx.fillStyle = "blue";
+            ctx.beginPath();
+            ctx.arc(last_point.x+lag, last_point.y, 5, 0, 2 * Math.PI);
+            ctx.fill();
           }
         });
         tmpCanvas.addEventListener("pointerup", (e) => {
