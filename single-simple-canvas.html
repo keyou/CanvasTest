@@ -8,16 +8,18 @@
   <canvas id="canvas1" style="touch-action:none;border-style:solid;"></canvas>
   <br>
   <button id="btnDraw1">AutoDraw1</button>
+  <button id="btnClear1">Clear1</button>
   <br>
   <pre id="log1" style="font:6pt">log1</pre>
   <script>
     // drawing surface
     class Surface {
-      constructor(canvasid, buttonid, logid, lagtime) {
+      constructor(canvasid, buttonid, logid, btnClearId, lagtime) {
         const tmpCanvas = document.querySelector(canvasid);
         const canvas = tmpCanvas;
         const button = document.querySelector(buttonid);
         const log = document.querySelector(logid);
+        const btnClear = document.querySelector(btnClearId);
         const ctx = canvas.getContext("2d", {
           // alpha: true
         });
@@ -38,8 +40,6 @@
             start_fps = start;
             if (start_fps) {
               frame_count = 0;
-              console.log("clear")
-              clear_canvas();
               start_time = performance.now();
             } else {
               const fps = (frame_count / (performance.now() - start_time)) * 1000;
@@ -188,7 +188,10 @@
         }
 
         button.addEventListener("click", draw_canvas);
-
+        btnClear.addEventListener("click", function(){
+          console.log("clear");
+          clear_canvas();
+        });
         // if (ctx.getContextAttributes().desynchronized != desync) {
         //   ctx.fillStyle = "red";
         //   ctx.fillRect(0, 0, width, height);
@@ -197,16 +200,10 @@
     }
 
     var LagTime = 5;
-    var slider = document.getElementById("lagslider");
     var output = document.getElementById("lagtext");
     output.innerHTML = slider.value;
 
-    slider.oninput = function () {
-      output.innerHTML = this.value;
-      LagTime = this.value;
-    }
-
-    const surface1 = new Surface("#canvas1", "#btnDraw1", "#log1", 1);
+    const surface1 = new Surface("#canvas1", "#btnDraw1", "#log1", "#btnClear1", 1);
 
   </script>
 </body>
